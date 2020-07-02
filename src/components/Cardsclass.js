@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol, MDBContainer, MDBRow } from 'mdbreact';
+import { MDBBtn, MDBCard, MDBCardBody, MDBCardImage, MDBCardTitle, MDBCardText, MDBCol, MDBContainer, MDBRow, MDBIcon } from 'mdbreact';
 
 export default class Cardsclass extends Component {
 
@@ -7,7 +7,8 @@ export default class Cardsclass extends Component {
         super(props);
 
         this.state = {
-            data: []
+            data: [],
+            isLoading: true
         };
     }
 
@@ -18,7 +19,7 @@ export default class Cardsclass extends Component {
         const response = await fetch(apiURI)
         const data = await response.json()
         console.log(data)
-        this.setState({data: data})
+        this.setState({data: data, isLoading: false})
 
 
     }
@@ -33,20 +34,32 @@ export default class Cardsclass extends Component {
             <div key={post.id}className="mt-4">
             <MDBCol className="ml-4">
                 <MDBCard style={{ width: "22rem" }}>
-                <MDBCardImage className="img-fluid" src={this.props.imgsrc} waves />
+                 <p><MDBIcon icon="server" size="1x" className="deep-purple-text mt-3 mr-3"/>{post.id}</p> 
+                { /*<MDBCardImage className="img-fluid" src={this.props.imgsrc} waves /> */}
                 <MDBCardBody>
                 <MDBCardTitle>{post.title}</MDBCardTitle>
                 <MDBCardText>
                     Some quick example text to build on the card title and make
                     up the bulk of the card&apos;s content.
                 </MDBCardText>
-                <MDBBtn href="#">MDBBtn</MDBBtn>
+                <MDBBtn color="deep-purple" href="#">MDBBtn</MDBBtn>
                 </MDBCardBody>
             </MDBCard>
             </MDBCol>  
             </div>
         )
         })
+
+        if(this.state.isLoading){
+            return(
+                <MDBContainer>
+                    <div className="spinner-border fast" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                    
+                </MDBContainer>
+            )
+        }
 
     return (
         <MDBContainer fluid>
